@@ -9,7 +9,7 @@ A modern, responsive storefront for Warm Blazes Co. built with HTML, CSS, and Ja
 - FAQ and downloadable size guide
 
 ## Getting Started
-Open `index.html` in your browser to view the site locally. To share online, deploy to a static host (e.g., Netlify, GitHub Pages).
+Open `index.html` in your browser to view the site locally.
 
 ---
 Handcrafted with care for small-batch candle lovers!
