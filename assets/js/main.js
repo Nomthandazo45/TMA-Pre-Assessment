@@ -137,41 +137,45 @@ function renderProductsGrid() {
     container.appendChild(card);
   });
 
-// Signup will store emails in localStorage and send confirmation email via EmailJS
+  // Signup will store emails in localStorage and send confirmation email via EmailJS
 function setupSignup() {
   const form = $('#signup-form');
   if (!form) return;
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    if (!email) return;
-    const key = 'ank_demo_emails';
-
-
-  //  create template data object for your simplified template
-    const templateParams = {
-      to_email: email  // This tells EmailJS where to send the email
-    };
-
-    // Send confirmation email using EmailJS
-    console.log('Sending email with params:', templateParams);
-
-    emailjs.send('service_6pe9nuh', 'template_gphlz6c', templateParams, 'akiSK9OiNxva99E94')
-    .then(function(response) {
-      alert('Thank you for subscribing! Please check your email for confirmation.');
-      form.reset();
-    }, function(error) {
-      alert('Sorry, there was a problem sending the confirmation email. Please try again.');
-      form.reset();
-    });
-  });
-}
-
-  // Initialize EmailJS with my public key
+  
+  // Initialize EmailJS with the new method (do this once)
   emailjs.init({
     publicKey: 'akiSK9OiNxva99E94'
   });
   
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    if (!email) return;
+    
+    // Store email locally
+    const key = 'ank_demo_emails';
+    const list = JSON.parse(localStorage.getItem(key) || '[]');
+    list.push({ email, at: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(list));
+
+    // Send confirmation email using EmailJS with new method
+    console.log('Sending mailing list confirmation to:', email);
+    
+    emailjs.send('service_6pe9nuh', 'template_gphlz6c', {
+      to_email: email
+    })
+    .then(function(response) {
+      console.log('Mailing list email sent successfully:', response.status, response.text);
+      alert('Thank you for subscribing! Please check your email for confirmation.');
+      form.reset();
+    })
+    .catch(function(error) {
+      console.error('Mailing list email send failed:', error);
+      console.log('Error details:', error.text || error.message);
+      alert('Sorry, there was a problem sending the confirmation email. Please try again later.');
+      form.reset();
+    });
+  });
 }
 
   // Attach click handlers for add-to-cart buttons. 
@@ -181,7 +185,7 @@ function setupSignup() {
       addToCart(id, 1, null);
     });
   });
-
+}
 
 // Render individual product page using query param ?id=
 function renderProductPage() {
@@ -464,3 +468,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
   }
 });
+
+
+// Signup will store emails in localStorage and send confirmation email via EmailJS
+function setupSignup() {
+  const form = $('#signup-form');
+  if (!form) return;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    if (!email) return;
+    const key = 'ank_demo_emails';
+
+
+  //  create template data object for your simplified template
+    const templateParams = {
+      to_email: email  // This tells EmailJS where to send the email
+    };
+
+    // Send confirmation email using EmailJS
+    console.log('Sending email with params:', templateParams);
+
+    emailjs.send('service_6pe9nuh', 'template_gphlz6c', templateParams, 'akiSK9OiNxva99E94')
+    .then(function(response) {
+      alert('Thank you for subscribing! Please check your email for confirmation.');
+      form.reset();
+    }, function(error) {
+      alert('Sorry, there was a problem sending the confirmation email. Please try again.');
+      form.reset();
+    });
+  });
+}
