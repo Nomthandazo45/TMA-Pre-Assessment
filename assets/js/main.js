@@ -7,7 +7,7 @@ function formatPrice(value) {
 }
 
 // CART helpers (stored in localStorage so refresh keeps items)
-const CART_KEY = 'ank_demo_cart';
+const CART_KEY = 'Warm_Blazes_Co._cart';
 
 function getCart() {
   try {
